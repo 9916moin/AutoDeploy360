@@ -19,7 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'pip3 install -r requirements.txt'
+                sh 'pip3 install -r requirements.txt --break-system-packages'
                 sh 'python3 -m pytest tests/ -v'
             }
         }
