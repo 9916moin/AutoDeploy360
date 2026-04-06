@@ -19,8 +19,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                 sh 'pip3 install -r requirements.txt --break-system-packages --user'
-                 sh 'python3 -m pytest tests/ -v'
+                sh 'pip3 install -r requirements.txt --break-system-packages --user'
+                sh 'python3 -m pytest tests/ -v'
             }
         }
 
@@ -44,6 +44,13 @@ pipeline {
                     sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     sh "docker push ${DOCKER_IMAGE}:latest"
                 }
+            }
+        }
+
+        stage('Deploy via Ansible') {
+            steps {
+                echo 'Deploying to EC2 via Ansible...'
+                sh 'ansible-playbook ansible/deploy.yml -i ansible/inventory'
             }
         }
 

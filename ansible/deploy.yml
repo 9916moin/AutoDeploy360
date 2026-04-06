@@ -1,0 +1,16 @@
+---
+- name: Deploy AutoDeploy360
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Pull latest image
+      shell: docker pull moin22/autodeploy360:latest
+
+    - name: Stop old container
+      shell: docker stop autodeploy360 || true
+
+    - name: Remove old container
+      shell: docker rm autodeploy360 || true
+
+    - name: Run new container
+      shell: docker run -d --name autodeploy360 -p 5000:5000 --restart always moin22/autodeploy360:latest
